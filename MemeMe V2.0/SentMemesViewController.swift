@@ -10,9 +10,8 @@ import Foundation
 import UIKit
 
 class SentMemesViewController: UITableViewController{
+    
     var memes = [Meme]()
-    
-    
     
     override func viewWillAppear(_ animated: Bool) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -22,8 +21,6 @@ class SentMemesViewController: UITableViewController{
         self.navigationItem.title = "Sent Memes"
         self.tabBarController?.tabBar.isHidden = false
     }
-    
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MemeTableViewCell", for: indexPath)
@@ -36,7 +33,6 @@ class SentMemesViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return memes.count
     }
-    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let meme = memes[(indexPath as NSIndexPath).row]
