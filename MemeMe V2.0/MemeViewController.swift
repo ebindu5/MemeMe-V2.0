@@ -22,19 +22,26 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate,UINa
     @IBOutlet weak var topToolBar: UIToolbar!
     @IBOutlet weak var bottomToolBar: UIToolbar!
     var memedImage : UIImage!
+    var index = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpTextField(topText, text: "TOP")
-        setUpTextField(bottomText, text: "BOTTOM")
-        pickerImageView.backgroundColor = UIColor.black
-        shareButton.isEnabled = false
+//        if !detailViewFlag {
+            setUpTextField(topText, text: "TOP")
+            setUpTextField(bottomText, text: "BOTTOM")
+            pickerImageView.backgroundColor = UIColor.black
+            shareButton.isEnabled = false
+//        }else{
+//            shareButton.isEnabled = true
+//        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         subscribeToKeyboardNotifications()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -81,7 +88,7 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate,UINa
         activityController.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
             if completed {
                 self.save()
-                self.presentingViewController?.dismiss(animated: true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
             }
         }
         if UIDevice.current.userInterfaceIdiom == .pad{
@@ -112,9 +119,15 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate,UINa
     
     //MARK: - Save Meme
     func save() {
+        
         let meme = Meme(topText: topText.text!, bottomText: bottomText.text!, originalImage: pickerImageView.image!, memedImage: memedImage)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.memes.append(meme)
+        if index == -1{
+            appDelegate.memes.append(meme)
+        }else{
+            appDelegate.memes[index] = meme
+        }
+        
     }
     
     //MARK: - Hide Top and Bottom bars
